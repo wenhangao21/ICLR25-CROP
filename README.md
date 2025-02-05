@@ -5,7 +5,7 @@ This repository contains the code implementation for the paper titled "Discretiz
 Full paper on [OpenReview](https://openreview.net/forum?id=J9FgrqOOni).
 
 <p align="center">
-  <img src="https://wenhangao21.github.io/images/ICLR_DME.png" alt="Figure" width="400"/>
+  <img src="https://wenhangao21.github.io/images/ICLR_DME.png" alt="Figure" width="550"/>
 </p>
 
 **Bibtex**:
@@ -46,9 +46,15 @@ The commands for training are provided below. Note that there are different choi
 To_be_added
 ```
 
-- We also provide the uncleaned original code and pretrained  that can produce the exact same results as in the paper under the folder
+- We also provide the uncleaned original code and pretrained  that can produce the exact same results as in the paper under *To be added*
 
 ## Structure
 
 To be added
+
+## Description and Reference of Baseline Models
+Below, we provide descriptions and corresponding reference for the baseline models used in this study.
+
+-To be added
+
 
