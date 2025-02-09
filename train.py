@@ -2,123 +2,114 @@ import copy
 import json
 import os
 import sys
-
 import pandas as pd
-
 import torch
 import random
 import numpy as np
-
 from tqdm import tqdm
-
-
 from scr.PDE_Examples import Model_and_Data
 from scr.utils import LpLoss
 from scr.DON import torch2dgrid
+import argparse
 
+parser = argparse.ArgumentParser(description="Training Setup.")
+parser.add_argument("--which_example", type=str, help="Dataset name")
+parser.add_argument("--which_model", type=str, help="Model name")
+parser.add_argument("--seed", type=str, help="Random seed")
+args = parser.parse_args()
 
 #-----------------------------------Setup--------------------------------------
-if len(sys.argv) == 4:
+
+training_properties = {
+    "learning_rate": 0.001, 
+    "weight_decay": 1e-6,
+    "scheduler_step": 10,
+    "scheduler_gamma": 0.98,
+    "epochs": 1000,
+    "batch_size": 16,
+    "lp": 2,                # Do we use L1 or L2 errors? Default: L1
+}
+
+example_list = ["poisson", "ns_high_r", "ns_re5000", "darcy_in"]
+which_example = args.which_example
+if not which_example in example_list:
+    raise ValueError("Command-line arguments: which_example not valid")
+# if which_example == "ns_high_r":
+    # training_properties["batch_size"] = 100
+which_model = args.which_model
+if which_model == "CNO":
+    model_architecture_ = {
     
-    training_properties = {
-        "learning_rate": 0.001, 
-        "weight_decay": 1e-6,
-        "scheduler_step": 10,
-        "scheduler_gamma": 0.98,
-        "epochs": 1000,
-        "batch_size": 16,
-        "lp": 2,                # Do we use L1 or L2 errors? Default: L1
+    #Parameters to be chosen with model selection:
+    "N_layers": 3,            # Number of (D) & (U) blocks 
+    "channel_multiplier": 32, # Parameter d_e (how the number of channels changes)
+    "N_res": 4,               # Number of (R) blocks in the middle networs.
+    "N_res_neck" : 6,         # Number of (R) blocks in the BN
+    
+    #Other parameters:
+    "in_size": 64,            # Resolution of the computational grid
+    "kernel_size": 3,         # Kernel size
+    "in_channel_dim": 1,       # Number of input channels
+    "out_channel_dim": 1      # Number of output channels  
     }
+elif which_model == "FNO":
+    model_architecture_ = {
     
-    example_list = ["poisson", "ns_high_r", "ns_re5000", "darcy_in"]
-    which_example = sys.argv[1]
-    if not which_example in example_list:
-        raise ValueError("Command-line arguments: which_example not valid")
-    # if which_example == "ns_high_r":
-        # training_properties["batch_size"] = 100
-    which_model = sys.argv[2]
-    if which_model == "CNO":
-        model_architecture_ = {
-        
-        #Parameters to be chosen with model selection:
-        "N_layers": 3,            # Number of (D) & (U) blocks 
-        "channel_multiplier": 32, # Parameter d_e (how the number of channels changes)
-        "N_res": 4,               # Number of (R) blocks in the middle networs.
-        "N_res_neck" : 6,         # Number of (R) blocks in the BN
-        
-        #Other parameters:
-        "in_size": 64,            # Resolution of the computational grid
-        "kernel_size": 3,         # Kernel size
-        "in_channel_dim": 1,       # Number of input channels
-        "out_channel_dim": 1      # Number of output channels  
-        }
-        if which_example == "darcy421":
-              model_architecture_["in_size"] = 106
-    elif which_model == "FNO":
-        model_architecture_ = {
-        
-        #Parameters to be chosen with model selection:
-        "modes1": 24,              # Number of Fourier modes for axis 1
-        "modes2": 24,              # Number of Fourier modes for axis 2
-        "hidden_channel_dim": 16, # Number of channels in intermidiate Fourier layers, also called width
-        "N_layers": 4,            # Number of Fourier layers
-        
-        #Other parameters:
-        "in_channel_dim": 1,       # Number of input channels
-        "out_channel_dim": 1      # Number of output channels  
-        }
-    elif which_model == "CRNO":
-        model_architecture_ = {
-        
-        #Parameters to be chosen with model selection:
-        "modes": 24,              # Number of Fourier modes for axis 1
-        "ini_channels": 32,       # Number of channels in intermidiate Fourier layers, also called width
-        "N_layers": 3,            # Number of Fourier layers
-        "N_res": 4,               # Number of (R) blocks in the middle networs.
-        "N_res_neck" : 6,         # Number of (R) blocks in the BN
-        
-        #Other parameters:
-        "in_out_size": 64,            # Latent Grid Size
-        "latent_size": 64,            # Latent Grid Size
-        "kernel_size": 3,         # Kernel size
-        "in_channel_dim": 1,       # Number of input channels
-        "out_channel_dim": 1      # Number of output channels  
-        }   
-        if which_example == "darcy421":
-              model_architecture_["in_out_size"] = 106
-              model_architecture_["latent_size"] = 106
-    elif which_model == "U":
-        model_architecture_ = {
-        "in_channel_dim": 1,       # Number of input channels
-        "out_channel_dim": 1,      # Number of output channels  
-        "ini_channels": 32
-        }   
-    elif which_model == "ResNet":
-        training_properties = {
-        "learning_rate": 0.0005,
-        "weight_decay": 1e-12,
-        "scheduler_step": 10,
-        "scheduler_gamma": 0.98,
-        "epochs": 1000,
-        "batch_size": 16,
-        "lp": 2,
-        }
-        model_architecture_ = {
-        "in_channel_dim": 1,       # Number of input channels
-        "out_channel_dim": 1,      # Number of output channels  
-        "layers": 4,
-        "neurons": 40
-        }
-    else:
-        raise ValueError("which_model can be: FNO, CNO, UNet, ResNet, or CRNO")
-    random_seed = sys.argv[3]
-
-    # Save the models here:
-    folder = "TrainedModels/"+which_model+"_" +which_example+"_"+"seed_"+random_seed
-        
+    #Parameters to be chosen with model selection:
+    "modes1": 24,              # Number of Fourier modes for axis 1
+    "modes2": 24,              # Number of Fourier modes for axis 2
+    "hidden_channel_dim": 16, # Number of channels in intermidiate Fourier layers, also called width
+    "N_layers": 4,            # Number of Fourier layers
+    
+    #Other parameters:
+    "in_channel_dim": 1,       # Number of input channels
+    "out_channel_dim": 1      # Number of output channels  
+    }
+elif which_model == "CRNO":
+    model_architecture_ = {
+    
+    #Parameters to be chosen with model selection:
+    "modes": 24,              # Number of Fourier modes for axis 1
+    "ini_channels": 32,       # Number of channels in intermidiate Fourier layers, also called width
+    "N_layers": 3,            # Number of Fourier layers
+    "N_res": 4,               # Number of (R) blocks in the middle networs.
+    "N_res_neck" : 6,         # Number of (R) blocks in the BN
+    
+    #Other parameters:
+    "in_out_size": 64,            # Latent Grid Size
+    "latent_size": 64,            # Latent Grid Size
+    "kernel_size": 3,         # Kernel size
+    "in_channel_dim": 1,       # Number of input channels
+    "out_channel_dim": 1      # Number of output channels  
+    }   
+elif which_model == "U":
+    model_architecture_ = {
+    "in_channel_dim": 1,       # Number of input channels
+    "out_channel_dim": 1,      # Number of output channels  
+    "ini_channels": 32
+    }   
+elif which_model == "ResNet":
+    training_properties = {
+    "learning_rate": 0.0005,
+    "weight_decay": 1e-12,
+    "scheduler_step": 10,
+    "scheduler_gamma": 0.98,
+    "epochs": 1000,
+    "batch_size": 16,
+    "lp": 2,
+    }
+    model_architecture_ = {
+    "in_channel_dim": 1,       # Number of input channels
+    "out_channel_dim": 1,      # Number of output channels  
+    "layers": 4,
+    "neurons": 40
+    }
 else:
-    raise ValueError("Command-line arguments: python script name (TrainCRNO.py), which_example, which_model, random_seed")
+    raise ValueError("which_model can be: FNO, CNO, UNet, ResNet, or CRNO")
+random_seed = args.seed
 
+# Save the models here:
+folder = "TrainedModels/"+which_model+"_" +which_example+"_"+"seed_"+random_seed
 
 torch.manual_seed(int(random_seed))
 np.random.seed(int(random_seed))

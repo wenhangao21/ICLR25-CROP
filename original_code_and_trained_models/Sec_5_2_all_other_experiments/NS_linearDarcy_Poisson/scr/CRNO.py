@@ -518,7 +518,7 @@ class CRNO2d(nn.Module):
             nparams += param.numel()
             nbytes += param.data.element_size() * param.numel()
 
-        print(f'Total number of model parameters in CNO: {nparams} (~{format_tensor_size(nbytes)})')
+        print(f'Total number of model parameters in CRNO: {nparams} (~{format_tensor_size(nbytes)})')
 
         return nparams
         
