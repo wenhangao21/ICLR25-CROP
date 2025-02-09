@@ -1,6 +1,10 @@
 # [ICLR 2025] Discretization-invariance? On the Discretization Mismatch Errors in Neural Operators
 
-This repository contains the code implementation for the paper titled "Discretization-invariance? On the Discretization Mismatch Errors in Neural Operators". **W.Gao**, R.Xu, Y.Deng, Y.Liu. The Thirteenth International Conference on Learning Representations (ICLR), 2025
+This repository contains the code implementation for the paper titled "Discretization-invariance? On the Discretization Mismatch Errors in Neural Operators"
+
+**W.Gao**, R.Xu, Y.Deng, Y.Liu
+
+The Thirteenth International Conference on Learning Representations (ICLR), 2025
 
 Full paper on [OpenReview](https://openreview.net/forum?id=J9FgrqOOni).
 
