@@ -24,7 +24,7 @@ Full paper on [OpenReview](https://openreview.net/forum?id=J9FgrqOOni).
 ```
 
 ## Introduction 
-This paper studies the discretization-invariance property (i.e., the ability to perform zero-shot super-resolution tasks) of grid-based neural operators, using Fourier Neural Operators (FNO) as an example. Cross-resolution (super-resolution) capability is a desirable feature of neural operators like FNO. However, there is a price to pay. It is a long-standing misconception in the community that grid-based neural operators can perform super-resolution tasks without any degradation in performance. We clarify this misconception by identifying the root cause of such degradation: **Discretization Mismatch Errors (DMEs)**.
+This paper studies the discretization-invariance property (i.e., the ability to perform zero-shot super-resolution tasks) of grid-based neural operators, using Fourier Neural Operators (FNO) as an example. **Cross-resolution (super-resolution) capability is a desirable feature of neural operators like FNO. However, there is a price to pay.** It is a long-standing misconception in the community that grid-based neural operators can perform super-resolution tasks without any degradation in performance. We clarify this misconception by identifying the root cause of such degradation: **Discretization Mismatch Errors (DMEs)**.
 - We define discretization mismatch errors (DMEs) in Sec. 4.1 as the difference between the neural operator outputs when taking the same input at different discretizations.
 - We provide an upper bound on the DME for grid-based neural operators in Sec. 4.2. 
 	- Given a fixed training resolution and a higher testing resolution, we show that the DME increases as the testing resolution increases. 
