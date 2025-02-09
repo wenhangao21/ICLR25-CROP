@@ -32,29 +32,28 @@ This paper studies the discretization-invariance property (i.e., the ability to 
 - However, we advocate for further studies in this direction to explore more advanced and principled approaches, potentially informed by known physics, which we discuss in Appendix E.
 
 
-## Preparing Data
-
-The data used in this paper can be downloaded at *To be added*.
-
-All PDE data are directly adopted from previously established open-source datasets or generated using publicly available scripts. Please see Appendix D of the paper for details.
-
 ## How to Run
 
-The commands for training are provided below. Note that there are different choices for the intermediate neural operator. We provide three different intermediate neural operators; however, any architecture can be used. Our findings indicate that the choice of the intermediate operator is crucial.
+While various intermediate neural operators can be used, we have tested a few examples, including FNO, FNO with local fixed-size convolutions, U-Net (CNO without up and downsampling in activation), and a simple CNN with Fourier layers for global learning. We find that the choice of the intermediate operator is crucial; however, designing optimal architectures is beyond the scope of this work. **Rather than proposing a specific architecture, our goal is to encourage the development of more advanced methods for cross-resolution applications. We advocate for architectures that balance strong performance with physical principles, even if they are not necessarily suited for super-resolution tasks.**
 
-```python
-To_be_added
+A sample CROP pipeline is provided, where the intermediate neural operator is an U-Net from CNO [1] with the anti-alias activation removed. Use the following command to run the train script (CRNO: Cross-Resolution Neural Operator).
+
+```
+python3.12 train.py ns_high_r CRNO $seeds
 ```
 
-- We also provide the uncleaned original code and pretrained  that can produce the exact same results as in the paper under *To be added*
+## Original Code and Trained Models
 
-## Structure
+We provide the original, uncleaned (but still readable) code along with some pretrained models. These are available in the `original_code_and_trained_models` folder.
 
-To be added
+## Preparing Data
 
-## Description and Reference of Baseline Models
-Below, we provide descriptions and corresponding reference for the baseline models used in this study.
+The data used in this paper can be downloaded [here](https://drive.google.com/drive/folders/1OK3VNzrAKS6vEqwo69UMdOc_DAtnRpMl?usp=sharing). The descriptions and usage are provided in their respective sections under `original_code_and_trained_models`.
 
--To be added
+The Darcy flow data can be downloaded [here](https://drive.google.com/file/d/1Z1uxG9R8AdAGJprG5STcphysjm56_0Jf/view?usp=sharing), which is uploaded by the authors of FNO [2].
 
+**All PDE data are adopted from previously established open-source datasets or generated using publicly available scripts. Please see Appendix D of the paper for details.**
 
+[1] Convolutional Neural Operators for robust and accurate learning of PDEs, Bogdan Raonić, et al., NeurIPS 2023
+
+[2] Fourier Neural Operator for Parametric Partial Differential Equations, Zongyi Li et al., ICLR 2021
