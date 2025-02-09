@@ -2,7 +2,7 @@
 
 This repository contains the code implementation for the paper titled "Discretization-invariance? On the Discretization Mismatch Errors in Neural Operators"
 
-**[Wenhan Gao](https://wenhangao21.github.io/)**, Ruichen Xu, [Yuefan Deng](https://www.stonybrook.edu/commcms/ams/people/_faculty_profiles/deng), [Y.Liu](https://jacoblau0513.github.io/)
+**[Wenhan Gao](https://wenhangao21.github.io/)**, [Ruichen Xu](https://calendarmedia.blob.core.windows.net/assets/c52ccfd2-26bb-4d0d-993b-e4c9cf72c89d.jpg), [Yuefan Deng](https://www.stonybrook.edu/commcms/ams/people/_faculty_profiles/deng), [Y.Liu](https://jacoblau0513.github.io/)
 
 The Thirteenth International Conference on Learning Representations (ICLR), 2025
 
