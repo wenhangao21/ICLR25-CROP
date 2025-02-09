@@ -26,9 +26,10 @@ This paper studies the discretization-invariance property (i.e., the ability to 
 	- Given a fixed training resolution and a higher testing resolution, we show that the DME increases as the testing resolution increases. 
 	- Moreover, this error accumulates through the layers of the neural operator and across autoregressive time steps (if applicable).
 - We verify our theoretical conclusions through empirical experiments in Sec. 5.1.1 (see Fig. 3).
-- We propose a simple solution in Sec. 4.3 and demonstrate its effectiveness in Sec. 5.1.2. This simple solution restricts the latent feature functions to be in a bandlimited function space. By doing so, there are two main benefits:
+- We propose a simple solution in Sec. 4.3 and demonstrate its effectiveness in cross-resolutiont tasks in Sec. 5.1.2. This simple solution restricts the latent feature functions to be in a bandlimited function space. By doing so, there are three main benefits:
 	- Since the latent feature functions reside in a bandlimited function space, we can fix the resolution of their discretized forms within the limits tolerated by the bandlimits. As a result, no discretization mismatch errors are introduced by the intermediate layers.
 	- There are no aliasing errors (see the Convolutional Neural Operator paper by Bogdan Raonić et al.).
+	- As the intermediate resolution is fixed, we can use any fixed-size network components, e.g. fixed-size local convolutions. 
 - However, we advocate for further studies in this direction to explore more advanced and principled approaches, potentially informed by known physics, which we discuss in Appendix E.
 
 
