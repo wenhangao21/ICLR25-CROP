@@ -2,7 +2,7 @@
 
 <div align="center">
 	
-[![Paper](https://img.shields.io/badge/PDF-Paper-red.svg)](https://openreview.net/forum?id=J9FgrqOOni)
+[![Paper](https://img.shields.io/badge/PDF-Paper-red.svg)](https://openreview.net/pdf?id=J9FgrqOOni)
 [![Code](https://img.shields.io/badge/CROP/CRNO-Code-orange.svg)](https://github.com/wenhangao21/ICLR25-CROP)
 
 </div>
