@@ -55,7 +55,7 @@ We provide the original, uncleaned (but still readable) code along with some pre
 
 The data used in this paper can be downloaded [here](https://drive.google.com/drive/folders/1OK3VNzrAKS6vEqwo69UMdOc_DAtnRpMl?usp=sharing). The descriptions and usage are provided in their respective sections under `original_code_and_trained_models`.
 
-The Darcy flow data can be downloaded [here](https://drive.google.com/file/d/1Z1uxG9R8AdAGJprG5STcphysjm56_0Jf/view?usp=sharing), which is uploaded by the authors of FNO [2].
+The Darcy flow data (non-linear mapping) can be downloaded [here](https://drive.google.com/file/d/1Z1uxG9R8AdAGJprG5STcphysjm56_0Jf/view?usp=sharing), which is uploaded by the authors of FNO [2].
 
 **All PDE data are adopted from previously established open-source datasets or generated using publicly available scripts. Please see Appendix D of the paper for details.**
 
