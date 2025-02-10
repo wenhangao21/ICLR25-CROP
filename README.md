@@ -1,7 +1,9 @@
 # [ICLR 2025] Discretization-invariance? On the Discretization Mismatch Errors in Neural Operators
 <div align="center">
+	
 [![Paper](https://img.shields.io/badge/PDF-Paper-red.svg)](https://openreview.net/forum?id=J9FgrqOOni)
 [![Code](https://img.shields.io/badge/RISE-Code-orange.svg)]([https://github.com/QuJX/RISE](https://github.com/wenhangao21/ICLR25-CROP))
+
 </div>
 
 This repository contains the code implementation for the paper titled "Discretization-invariance? On the Discretization Mismatch Errors in Neural Operators"
