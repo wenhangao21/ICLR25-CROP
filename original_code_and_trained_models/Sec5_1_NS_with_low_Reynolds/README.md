@@ -19,7 +19,7 @@ done
 ``` 
 
 - Fig. 1 (b)
-	- The folder `Increase_with_layers` contains the scripts for measuring all the errors. This experiments are repeated 20 times on a much smaller set of training data. The errors are also measured on the training set sa the purpose is only to show the discretization error. The trained models (300 of them) can be downloaded via the link above. 
+	- The folder `Increase_with_layers` contains the scripts for measuring all the errors. This experiments are repeated 20 times on a much smaller set of training data. The errors are also measured on the training set as the purpose is only to show the discretization error. The trained models (300 of them) can be downloaded via the same link above. 
 
 
 
