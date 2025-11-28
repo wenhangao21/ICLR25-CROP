@@ -70,9 +70,43 @@ The Darcy flow data (non-linear mapping) can be downloaded [here](https://drive.
 
 [2] Fourier Neural Operator for Parametric Partial Differential Equations, Zongyi Li et al., ICLR 2021
 
+## Community Findings
 
-</div>
-<p align="center"> 
-  Visitor count<br>
-  <img src="https://profile-counter.glitch.me/wenhangao21-ICLR25-CROP/count.svg" />
-</p>
+### Normalization and Zero-shot Super Resolution
+
+Recently, [ChenYixiaoSJTU](https://github.com/ChenYixiaoSJTU) presented additional interesting results on CROP. The details are in [Issue #1](https://github.com/wenhangao21/ICLR25-CROP/issues/1).
+
+**TL;DR:** [ChenYixiaoSJTU](https://github.com/ChenYixiaoSJTU) conducted experiments with an older version of FNO that does not use `InstanceNorm` and does not include additional `MLP Layers`, and they found that the older version of FNO is able to generalize better across resolutions.
+
+**Versions of FNO**: The authors of FNO have deleted their old repository. You can find the exact architecture and update log from [my fork of that repository](https://github.com/wenhangao21/fourier_neural_operator). In CROP, the latest version (post–Dec 2022) is used. In [ChenYixiaoSJTU](https://github.com/ChenYixiaoSJTU)'s experiments, the pre–Dec 2022 version is used.
+
+**Results from [ChenYixiaoSJTU](https://github.com/ChenYixiaoSJTU)**: The same dataset is used with four model variants:
+
+| Model | Description |
+|-------|-------------|
+| pre-Dec-2022 FNO | Without InstanceNorm and without MLP after spectral convolution |
+| post-Dec-2022 FNO | With InstanceNorm and MLP |
+| Crop pre-Dec-2022 FNO | pre-Dec-2022 FNO + CROP|
+| Crop post-Dec-2022 FNO | post-Dec-2022 FNO + CROP|
+
+The cross-resolution L2 errors are shown below:
+
+| Resolution | pre-Dec-2022 FNO | post-Dec-2022 FNO | Crop pre-Dec-2022 FNO | Crop post-Dec-2022 FNO |
+|------------|--------------|----------|---------------------|---------------|
+| 256        | 0.009129     | 0.061807 | 0.009059            | 0.006362      |
+| 128        | 0.009126     | 0.042035 | 0.009060            | 0.006360      |
+| 64(training resolution)         | 0.009024     | 0.008561 | 0.009062            | 0.006362      |
+| 32         | 0.009051     | 0.086944 | 0.009088            | 0.006351      |
+
+**These results suggest that (adopted from [ChenYixiaoSJTU](https://github.com/ChenYixiaoSJTU)):**
+- The cross-resolution performance of the pre-Dec-2022 FNO is actually quite good, much better than what is reported in the CROP paper.
+- The degradation mainly comes from the use of InstanceNorm, which significantly hurts resolution generalization.
+- CROP provides only marginal improvement for the pre-Dec-2022 FNO, indicating that the baseline itself is already resolution-stable.
+- CROP + (MLP + InstanceNorm) does show clear improvements, suggesting that CROP is especially beneficial when the architecture otherwise introduces resolution-dependent behavior.
+
+**My additional insights**:
+
+- The instability of grid-based neural operators across resolutions, including FNO, largely arises from non-linear activation functions, and the linear layers further amplify this instability.
+- In my past experiments, the post–Dec 2022 FNO **without** non-linearity is robust across resolutions. It is possible that normalization and non-linearity have a joint effect, which was not examined in the CROP paper.
+- In [ChenYixiaoSJTU](https://github.com/ChenYixiaoSJTU)'s results, CROP improves the post–Dec 2022 FNO from **0.86% to 0.64%**. In my experiments, the improvement is from **0.58% to 0.54%**. I am unsure whether this discrepancy is due to differences in Torch environments or some unknown mechanism of CROP that leads to such an improvement.
+
