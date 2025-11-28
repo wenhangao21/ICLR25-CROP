@@ -108,5 +108,6 @@ The cross-resolution L2 errors are shown below:
 
 - The instability of grid-based neural operators across resolutions, including FNO, largely arises from non-linear activation functions, and the linear layers further amplify this instability.
 - In my past experiments, the post–Dec 2022 FNO **without** non-linearity is robust across resolutions. It is possible that normalization and non-linearity have a joint effect, which was not examined in the CROP paper.
+- In CROP, it is shown that errors propagate through layers. The removal of the additional MLP layers also contributes to stability, as the model now contains fewer layers.
 - In [ChenYixiaoSJTU](https://github.com/ChenYixiaoSJTU)'s results, CROP improves the post–Dec 2022 FNO from **0.86% to 0.64%**. In my experiments, the improvement is from **0.58% to 0.54%**. I am unsure whether this discrepancy is due to differences in Torch environments or some unknown mechanism of CROP that leads to such an improvement.
 
