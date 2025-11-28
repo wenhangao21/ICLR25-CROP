@@ -51,7 +51,7 @@ While various intermediate neural operators can be used, we have tested a few ex
 A sample CROP pipeline is provided, where the intermediate neural operator is an U-Net from CNO [1] with the anti-alias activation removed. Use the following command to run the train script (CRNO: Cross-Resolution Neural Operator).
 
 ```
-python3.12 train.py --which_example ns_high_r --which_model CRNO --seed 42
+python train.py --which_example ns_high_r --which_model CRNO --seed 42
 ```
 
 ## Original Code and Trained Models
